@@ -14,18 +14,18 @@ module.exports = function check(str, bracketsConfig) {
     if(element in bracketsTypes && !bracketsTypes[element].double) {
       bracketsStack.push(element)
     } else if (
-        bracketsTypes[element]?.double 
+        bracketsTypes[element]
+        && bracketsTypes[element].double
         && bracketsStack.length 
         && bracketsStack[bracketsStack.length - 1] === element) 
       {
       bracketsStack.pop()
-      
-    } else if (bracketsTypes[element]?.double) {
+    } else if (bracketsTypes[element] && bracketsTypes[element].double ) {
       bracketsStack.push(element)
     } else {
       let lastElement = bracketsStack.pop()
-      if (bracketsTypes[lastElement]?.close !== element) {
-        if (bracketsTypes[lastElement]?.double) {
+      if (!bracketsTypes[lastElement] || bracketsTypes[lastElement].close !== element) {
+        if (bracketsTypes[lastElement] && bracketsTypes[lastElement].double) {
           bracketsStack.push(element)
         } else {
           flag = false
